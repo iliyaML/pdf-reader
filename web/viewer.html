@@ -386,7 +386,7 @@ See https://github.com/adobe-type-tools/cmap-resources
       // Service Worker
       if ('serviceWorker' in navigator) {
           window.addEventListener('load', function () {
-              navigator.serviceWorker.register('/web/sw.js', { scope: './' }).then(function (registration) {
+              navigator.serviceWorker.register('/web/sw.js').then(function (registration) {
                   // Registration was successful
                   console.log('ServiceWorker registration successful with scope: ', registration.scope);
               }, function (err) {
