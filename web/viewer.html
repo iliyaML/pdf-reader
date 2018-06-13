@@ -381,6 +381,21 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
+
+    <script>
+      // Service Worker
+      if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function () {
+              navigator.serviceWorker.register('/web/sw.js', { scope: './web' }).then(function (registration) {
+                  // Registration was successful
+                  console.log('ServiceWorker registration successful with scope: ', registration.scope);
+              }, function (err) {
+                  // registration failed :(
+                  console.log('ServiceWorker registration failed: ', err);
+              });
+          });
+      }
+  </script>
   </body>
 </html>
 
