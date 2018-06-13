@@ -3482,7 +3482,7 @@ var defaultOptions = {
     kind: OptionKind.VIEWER
   },
   defaultUrl: {
-    value: 'compressed.tracemonkey-pldi-09.pdf',
+    value: 'Sapura.pdf',
     kind: OptionKind.VIEWER
   },
   defaultZoomValue: {
