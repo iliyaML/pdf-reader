@@ -426,6 +426,9 @@ See https://github.com/adobe-type-tools/cmap-resources
   <div style="color: red; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" id="mouse">+</div>
 
   <script>
+    var sLeft = 0;
+    var sTop = 0;
+    
     document.getElementById('viewerContainer').onscroll = function(){
       var canvas = document.getElementById('page1');
       var bodyRect = canvas.getBoundingClientRect();
@@ -440,7 +443,37 @@ See https://github.com/adobe-type-tools/cmap-resources
 
         document.getElementById('xcoor').value = offsetX;
         document.getElementById('ycoor').value = offsetY;
+
+        if(offsetX >= 0){
+          sLeft = document.getElementById('viewerContainer').scrollLeft;
+        } else {
+          document.getElementById('viewerContainer').scrollLeft = sLeft;
+        }
+
+        if(offsetY >= 0){
+          sTop = document.getElementById('viewerContainer').scrollTop;
+        } else {
+          document.getElementById('viewerContainer').scrollTop = sTop;
+        }
+        
     }
+
+    // setTimeout(function(){
+    //   // var canvas = document.getElementById('page1');
+    //   // var bodyRect = canvas.getBoundingClientRect();
+    //   // var elemRect = document.body.getBoundingClientRect();
+    //   // var offset   = elemRect.left - bodyRect.left;
+
+
+    //   var bodyRect = document.body.getBoundingClientRect(),
+    //   elemRect = document.getElementById('page1').getBoundingClientRect(),
+    //   offset   = elemRect.top - bodyRect.top;
+
+
+    //   document.getElementById('viewerContainer').scrollTop = - offset;
+    //   console.log(- offset);
+    // }, 3000);
+    
   </script>
 
   <script>
