@@ -2,7 +2,7 @@
     "name": "PDF Reader",
     "short_name": "PDF Reader",
     "lang": "en-US",
-    "start_url": "/web/viewer.html",
+    "start_url": "../web/viewer.html",
     "display": "standalone",
     "background_color": "#fff",
     "theme_color": "#fff",
