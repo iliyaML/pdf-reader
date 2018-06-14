@@ -426,11 +426,16 @@ See https://github.com/adobe-type-tools/cmap-resources
   <div style="color: red; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" id="mouse">+</div>
 
   <script>
+    var canvas;
+    var context;
     var sLeft = 0;
     var sTop = 0;
+    var coordinateArr;
     
     document.getElementById('viewerContainer').onscroll = function(){
-      var canvas = document.getElementById('page1');
+      start();
+
+      canvas = document.getElementById('page1');
       var bodyRect = canvas.getBoundingClientRect();
       var elemRect = document.getElementById('mouse').getBoundingClientRect();
         
@@ -438,25 +443,76 @@ See https://github.com/adobe-type-tools/cmap-resources
       var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
       var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
 
+      var coorYdiff = coordinateArr[2] - coordinateArr[0];
+    var coorXdiff = coordinateArr[5] - coordinateArr[3];
+
+    
+
       var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
       var offsetX = (elemRect.left - bodyRect.left+ (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
 
-        document.getElementById('xcoor').value = offsetX;
-        document.getElementById('ycoor').value = offsetY;
+      var newx = offsetX * (coorXdiff / canvas.width);
+    var newy = offsetY * (coorYdiff / canvas.height);
 
-        if(offsetX >= 0){
-          sLeft = document.getElementById('viewerContainer').scrollLeft;
-        } else {
-          document.getElementById('viewerContainer').scrollLeft = sLeft;
+    document.getElementById('xcoor').value = newx + coordinateArr[3];
+    document.getElementById('ycoor').value = newy + coordinateArr[0];
+
+        if(offsetX < 0 || offsetX > canvas.width){
+          document.getElementById('xcoor').value = "";
         }
 
-        if(offsetY >= 0){
-          sTop = document.getElementById('viewerContainer').scrollTop;
-        } else {
-          document.getElementById('viewerContainer').scrollTop = sTop;
+        if(offsetY < 0 || offsetY > canvas.height){
+          document.getElementById('ycoor').value = "";
         }
         
+        
     }
+
+    function start(){
+  canvas = document.getElementById('page1');
+  context = canvas.getContext('2d');
+
+    // Let us open our database
+var DBOpenRequest = window.indexedDB.open("CoorDB", 2);
+
+DBOpenRequest.onsuccess = function(event) {    
+  // store the result of opening the database in the db variable.
+  // This is used a lot below
+  db = DBOpenRequest.result;
+    
+  // Run the getData() function to get the data from the database
+  getData();
+};
+
+function getData() {
+  // open a read/write db transaction, ready for retrieving the data
+  var transaction = db.transaction(["customers"], "readwrite");
+
+  // report on the success of the transaction completing, when everything is done
+  transaction.oncomplete = function(event) {
+  };
+
+  transaction.onerror = function(event) {
+  };
+
+  // create an object store on the transaction
+  var objectStore = transaction.objectStore("customers");
+
+  // Make a request to get a record by key from the object store
+  var objectStoreRequest = objectStore.get("999");
+
+  objectStoreRequest.onsuccess = function(event) {
+    // report the success of our request
+    coordinateArr = objectStoreRequest.result.data;
+    console.log(JSON.stringify(coordinateArr));
+  };
+
+};
+
+
+}
+
+
 
     // setTimeout(function(){
     //   // var canvas = document.getElementById('page1');

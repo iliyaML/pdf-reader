@@ -8634,6 +8634,57 @@ var Page = function PageClosure() {
     },
     get mediaBox() {
       var mediaBox = this._getInheritableProperty('MediaBox', true);
+
+      var VP = this._getInheritableProperty('VP',
+      /* getArray = */ true);
+      // console.log(JSON.stringify(VP[0]._map));
+
+      if(VP){
+        var xref = this.xref;
+        var Measure = xref.fetchIfRef(VP[0]._map.Measure);
+        //window.MyCoordinates = Measure._map.GPTS;
+          console.log(Measure._map.GPTS);
+
+          var customerData = { 
+            ssn: '999',
+            data: Measure._map.GPTS
+          };
+
+          const dbName = "CoorDB";
+
+var request = indexedDB.open(dbName, 2);
+
+request.onerror = function(event) {
+// Handle errors.
+};
+request.onupgradeneeded = function(event) {
+var db = event.target.result;
+
+// Create an objectStore to hold information about our customers. We're
+// going to use "ssn" as our key path because it's guaranteed to be
+// unique - or at least that's what I was told during the kickoff meeting.
+var objectStore = db.createObjectStore("customers", { keyPath: "ssn" });
+
+// Create an index to search customers by name. We may have duplicates
+// so we can't use a unique index.
+// objectStore.createIndex("name", "name", { unique: false });
+
+// Create an index to search customers by email. We want to ensure that
+// no two customers have the same email, so use a unique index.
+// objectStore.createIndex("email", "email", { unique: true });
+
+// Use transaction oncomplete to make sure the objectStore creation is 
+// finished before adding data into it.
+objectStore.transaction.oncomplete = function(event) {
+// Store values in the newly created objectStore.
+var customerObjectStore = db.transaction("customers", "readwrite").objectStore("customers");
+customerObjectStore.add(customerData);
+};
+};
+
+          // postMessage(Measure._map.GPTS);
+      }
+
       if (!Array.isArray(mediaBox) || mediaBox.length !== 4) {
         return (0, _util.shadow)(this, 'mediaBox', LETTER_SIZE_MEDIABOX);
       }
