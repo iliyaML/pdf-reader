@@ -1,6 +1,6 @@
 var CACHE_NAME = 'pdf-reader-v1';
 var urlsToCache = [
-    '/web/viewer.html'
+    '/pdf-reader/web/viewer.html'
 ];
 
 // Install handler
