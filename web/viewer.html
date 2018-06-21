@@ -203,8 +203,9 @@
       <div class="toolbar">
         <div id="toolbarContainer">
           <div id="toolbarViewer">
-            <div id="toolbarViewerLeft">
-              +
+            <div id="toolbarViewerLeft" style="padding-left: 3px;">
+                <input type="number" id="ycoor" class="toolbarField pageNumber" title="y" value="" size="2" min="1" tabindex="15" data-l10n-id="page" max="1">
+                <input type="number" id="xcoor" class="toolbarField pageNumber" title="x" value="" size="2" min="1" tabindex="15" data-l10n-id="page" max="1">
                 <span style="display: none;">
               <button id="sidebarToggle" class="toolbarButton" title="Toggle Sidebar" tabindex="11" data-l10n-id="toggle_sidebar">
                 <span data-l10n-id="toggle_sidebar_label">Toggle Sidebar</span>
@@ -229,8 +230,7 @@
               </span>
             </div>
             <div id="toolbarViewerRight">
-                <input type="number" id="ycoor" class="toolbarField pageNumber" title="y" value="" size="2" min="1" tabindex="15" data-l10n-id="page" max="1">
-                <input type="number" id="xcoor" class="toolbarField pageNumber" title="x" value="" size="2" min="1" tabindex="15" data-l10n-id="page" max="1">
+                <!-- Lat Long Used to be here -->
 
               <button id="presentationMode" class="toolbarButton presentationMode hiddenLargeView" title="Switch to Presentation Mode"
                 tabindex="31" data-l10n-id="presentation_mode">
