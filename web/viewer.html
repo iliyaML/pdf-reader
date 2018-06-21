@@ -198,6 +198,13 @@
 
         </span>
 
+        <div class="horizontalToolbarSeparator"></div>
+
+        <button id="drawTool" class="secondaryToolbarButton selectTool" title="Enable Drawing Tool" tabindex="60"
+            data-l10n-id="cursor_draw">
+            <span data-l10n-id="cursor_draw_label">Draw</span>
+          </button>
+
           <div class="horizontalToolbarSeparator"></div>
 
           <button id="documentProperties" class="secondaryToolbarButton documentProperties" title="Document Properties…" tabindex="68"
@@ -211,7 +218,7 @@
       <div class="toolbar">
         <div id="toolbarContainer">
           <div id="toolbarViewer">
-            <div id="toolbarViewerLeft" style="padding-left: 3px;">
+            <div id="toolbarViewerLeft" style="padding-left: 4px;">
                 <input type="number" id="ycoor" class="toolbarField pageNumber" title="y" value="" size="2" min="1" tabindex="15" data-l10n-id="page" max="1">
                 <input type="number" id="xcoor" class="toolbarField pageNumber" title="x" value="" size="2" min="1" tabindex="15" data-l10n-id="page" max="1">
                 <span style="display: none;">
@@ -553,6 +560,9 @@ function getData() {
     // }, 3000);
     
   </script>
+
+  <script src="./js/jquery.js"></script>
+  <script src="./js/main.js"></script>
 
   <script>
     // Service Worker
