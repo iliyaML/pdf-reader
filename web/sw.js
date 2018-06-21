@@ -1,4 +1,4 @@
-var CACHE_NAME = 'pdf-reader-v1';
+var CACHE_NAME = 'pdf-reader-v2';
 var urlsToCache = [
     '/pdf-reader/web/viewer.html'
 ];
