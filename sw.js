@@ -1,6 +1,7 @@
 var CACHE_NAME = 'pdf-reader-v2';
 var urlsToCache = [
     '/pdf-reader/web/viewer.html',
+    '/pdf-reader/web/viewer.js',
     '/pdf-reader/web/viewer.css',
     '/pdf-reader/public/img/favicon.ico',
     '/pdf-reader/public/manifest.json',
