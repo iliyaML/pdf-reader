@@ -3,7 +3,7 @@ var urlsToCache = [
     '/pdf-reader/web/viewer.html',
     '/pdf-reader/web/viewer.css',
     '/pdf-reader/public/img/favicon.ico',
-    '/pdf-reader/public/img/manifest.json',
+    '/pdf-reader/public/manifest.json',
     '/pdf-reader/build/pdf.js',
     '/pdf-reader/build/pdf.worker.js'
 ];
