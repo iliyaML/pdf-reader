@@ -1,6 +1,6 @@
 {
-    "name": "PDF Reader",
-    "short_name": "PDF Reader",
+    "name": "GeoPDF",
+    "short_name": "GeoPDF",
     "lang": "en-US",
     "start_url": "../web/viewer.html",
     "display": "standalone",

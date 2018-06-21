@@ -8198,6 +8198,17 @@ var PDFWorker = function PDFWorkerClosure() {
             workerSrc = createCDNWrapper(new URL(workerSrc, window.location).href);
           }
           var worker = new Worker(workerSrc);
+
+          // Worker Message Event Handler
+          // Store coordinates into mainCoordinates
+          function handleMessageFromWorker(msg) {
+            if(msg.data.latLong){
+              console.log('incoming message from worker:', msg);
+              mainCoordinates = msg.data.latLong;
+            }
+        }
+        worker.addEventListener('message', handleMessageFromWorker);
+
           var messageHandler = new _message_handler.MessageHandler('main', 'worker', worker);
           var terminateEarly = function terminateEarly() {
             worker.removeEventListener('error', onWorkerError);
