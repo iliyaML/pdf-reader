@@ -12,9 +12,9 @@
   <script src="./js/main.js"></script>
 
   <script>
-  function helloWorld(){
-    alert('Hello World');
-  }
+    function helloWorld() {
+      alert('Hello World');
+    }
   </script>
 
 
@@ -25,20 +25,20 @@
   <link rel="resource" type="application/l10n" href="locale/locale.properties">
 
   <link rel="shortcut icon" href="../public/img/favicon.ico">
-    <link rel="manifest" href="../public/manifest.json">
+  <link rel="manifest" href="../public/manifest.json">
 
-    <!-- Meta -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="GeoPDF">
-    <meta name="apple-mobile-web-app-title" content="GeoPDF">
-    <meta name="theme-color" content="#fff">
-    <meta name="msapplication-navbutton-color" content="#fff">
-    <meta name="apple-mobile-web-app-status-bar-style" content="white-translucent">
-    <meta name="msapplication-starturl" content="/">
+  <!-- Meta -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="GeoPDF">
+  <meta name="apple-mobile-web-app-title" content="GeoPDF">
+  <meta name="theme-color" content="#fff">
+  <meta name="msapplication-navbutton-color" content="#fff">
+  <meta name="apple-mobile-web-app-status-bar-style" content="white-translucent">
+  <meta name="msapplication-starturl" content="/">
 
-    <!-- Icons -->
-    <!-- <link rel="icon" type="image/png" sizes="36x36" href="../public/img/android-icon-36x36.png">
+  <!-- Icons -->
+  <!-- <link rel="icon" type="image/png" sizes="36x36" href="../public/img/android-icon-36x36.png">
     <link rel="apple-touch-icon" type="image/png" sizes="36x36" href="../public/img/android-icon-36x36.png">
     <link rel="icon" type="image/png" sizes="48x48" href="../public/img/android-icon-48x48.png">
     <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="../public/img/android-icon-48x48.png">
@@ -51,9 +51,9 @@
     <link rel="icon" type="image/png" sizes="192x192" href="../public/img/android-icon-192x192.png">
     <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../public/img/android-icon-192x192.png"> -->
 
-    <script>
+  <script>
     var mainCoordinates;
-    </script>
+  </script>
   <script src="../build/pdf.js"></script>
   <script src="viewer.js"></script>
 </head>
@@ -166,51 +166,50 @@
 
           <span style="display: none;">
 
+            <div class="horizontalToolbarSeparator"></div>
+
+            <button id="cursorSelectTool" class="secondaryToolbarButton selectTool toggled" title="Enable Text Selection Tool" tabindex="60"
+              data-l10n-id="cursor_text_select_tool">
+              <span data-l10n-id="cursor_text_select_tool_label">Text Selection Tool</span>
+            </button>
+            <button id="cursorHandTool" class="secondaryToolbarButton handTool" title="Enable Hand Tool" tabindex="61" data-l10n-id="cursor_hand_tool">
+              <span data-l10n-id="cursor_hand_tool_label">Hand Tool</span>
+            </button>
+
+            <div class="horizontalToolbarSeparator"></div>
+
+            <button id="scrollVertical" class="secondaryToolbarButton scrollVertical toggled" title="Use Vertical Scrolling" tabindex="62"
+              data-l10n-id="scroll_vertical">
+              <span data-l10n-id="scroll_vertical_label">Vertical Scrolling</span>
+            </button>
+            <button id="scrollHorizontal" class="secondaryToolbarButton scrollHorizontal" title="Use Horizontal Scrolling" tabindex="63"
+              data-l10n-id="scroll_horizontal">
+              <span data-l10n-id="scroll_horizontal_label">Horizontal Scrolling</span>
+            </button>
+            <button id="scrollWrapped" class="secondaryToolbarButton scrollWrapped" title="Use Wrapped Scrolling" tabindex="64" data-l10n-id="scroll_wrapped">
+              <span data-l10n-id="scroll_wrapped_label">Wrapped Scrolling</span>
+            </button>
+
+            <div class="horizontalToolbarSeparator"></div>
+
+            <button id="spreadNone" class="secondaryToolbarButton spreadNone toggled" title="Do not join page spreads" tabindex="65"
+              data-l10n-id="spread_none">
+              <span data-l10n-id="spread_none_label">No Spreads</span>
+            </button>
+            <button id="spreadOdd" class="secondaryToolbarButton spreadOdd" title="Join page spreads starting with odd-numbered pages"
+              tabindex="66" data-l10n-id="spread_odd">
+              <span data-l10n-id="spread_odd_label">Odd Spreads</span>
+            </button>
+            <button id="spreadEven" class="secondaryToolbarButton spreadEven" title="Join page spreads starting with even-numbered pages"
+              tabindex="67" data-l10n-id="spread_even">
+              <span data-l10n-id="spread_even_label">Even Spreads</span>
+            </button>
+
+          </span>
+
           <div class="horizontalToolbarSeparator"></div>
 
-          <button id="cursorSelectTool" class="secondaryToolbarButton selectTool toggled" title="Enable Text Selection Tool" tabindex="60"
-            data-l10n-id="cursor_text_select_tool">
-            <span data-l10n-id="cursor_text_select_tool_label">Text Selection Tool</span>
-          </button>
-          <button id="cursorHandTool" class="secondaryToolbarButton handTool" title="Enable Hand Tool" tabindex="61" data-l10n-id="cursor_hand_tool">
-            <span data-l10n-id="cursor_hand_tool_label">Hand Tool</span>
-          </button>
-
-          <div class="horizontalToolbarSeparator"></div>
-
-          <button id="scrollVertical" class="secondaryToolbarButton scrollVertical toggled" title="Use Vertical Scrolling" tabindex="62"
-            data-l10n-id="scroll_vertical">
-            <span data-l10n-id="scroll_vertical_label">Vertical Scrolling</span>
-          </button>
-          <button id="scrollHorizontal" class="secondaryToolbarButton scrollHorizontal" title="Use Horizontal Scrolling" tabindex="63"
-            data-l10n-id="scroll_horizontal">
-            <span data-l10n-id="scroll_horizontal_label">Horizontal Scrolling</span>
-          </button>
-          <button id="scrollWrapped" class="secondaryToolbarButton scrollWrapped" title="Use Wrapped Scrolling" tabindex="64" data-l10n-id="scroll_wrapped">
-            <span data-l10n-id="scroll_wrapped_label">Wrapped Scrolling</span>
-          </button>
-
-          <div class="horizontalToolbarSeparator"></div>
-
-          <button id="spreadNone" class="secondaryToolbarButton spreadNone toggled" title="Do not join page spreads" tabindex="65"
-            data-l10n-id="spread_none">
-            <span data-l10n-id="spread_none_label">No Spreads</span>
-          </button>
-          <button id="spreadOdd" class="secondaryToolbarButton spreadOdd" title="Join page spreads starting with odd-numbered pages"
-            tabindex="66" data-l10n-id="spread_odd">
-            <span data-l10n-id="spread_odd_label">Odd Spreads</span>
-          </button>
-          <button id="spreadEven" class="secondaryToolbarButton spreadEven" title="Join page spreads starting with even-numbered pages"
-            tabindex="67" data-l10n-id="spread_even">
-            <span data-l10n-id="spread_even_label">Even Spreads</span>
-          </button>
-
-        </span>
-
-        <div class="horizontalToolbarSeparator"></div>
-
-        <button id="drawTool" class="secondaryToolbarButton selectTool" title="Enable Drawing Tool" tabindex="60"
-            data-l10n-id="cursor_draw">
+          <button id="drawTool" class="secondaryToolbarButton selectTool" title="Enable Drawing Tool" tabindex="60" data-l10n-id="cursor_draw">
             <span data-l10n-id="cursor_draw_label">Draw</span>
           </button>
 
@@ -228,33 +227,35 @@
         <div id="toolbarContainer">
           <div id="toolbarViewer">
             <div id="toolbarViewerLeft" style="padding-left: 4px;">
-                <input type="number" id="ycoor" class="toolbarField pageNumber" title="y" value="" size="2" min="1" tabindex="15" data-l10n-id="page" max="1">
-                <input type="number" id="xcoor" class="toolbarField pageNumber" title="x" value="" size="2" min="1" tabindex="15" data-l10n-id="page" max="1">
-                <span style="display: none;">
-              <button id="sidebarToggle" class="toolbarButton" title="Toggle Sidebar" tabindex="11" data-l10n-id="toggle_sidebar">
-                <span data-l10n-id="toggle_sidebar_label">Toggle Sidebar</span>
-              </button>
-              <div class="toolbarButtonSpacer"></div>
-              <button id="viewFind" class="toolbarButton" title="Find in Document" tabindex="12" data-l10n-id="findbar">
-                <span data-l10n-id="findbar_label">Find</span>
-              </button>
-              
-              <div class="splitToolbarButton hiddenSmallView">
-                <button class="toolbarButton pageUp" title="Previous Page" id="previous" tabindex="13" data-l10n-id="previous">
-                  <span data-l10n-id="previous_label">Previous</span>
+              <input type="number" id="ycoor" class="toolbarField pageNumber" title="y" value="" size="2" min="1" tabindex="15" data-l10n-id="page"
+                max="1">
+              <input type="number" id="xcoor" class="toolbarField pageNumber" title="x" value="" size="2" min="1" tabindex="15" data-l10n-id="page"
+                max="1">
+              <span style="display: none;">
+                <button id="sidebarToggle" class="toolbarButton" title="Toggle Sidebar" tabindex="11" data-l10n-id="toggle_sidebar">
+                  <span data-l10n-id="toggle_sidebar_label">Toggle Sidebar</span>
                 </button>
-                <div class="splitToolbarButtonSeparator"></div>
-                <button class="toolbarButton pageDown" title="Next Page" id="next" tabindex="14" data-l10n-id="next">
-                  <span data-l10n-id="next_label">Next</span>
+                <div class="toolbarButtonSpacer"></div>
+                <button id="viewFind" class="toolbarButton" title="Find in Document" tabindex="12" data-l10n-id="findbar">
+                  <span data-l10n-id="findbar_label">Find</span>
                 </button>
-              </div>
-              <input type="number" id="pageNumber" class="toolbarField pageNumber" title="Page" value="1" size="4" min="1" tabindex="15"
-                data-l10n-id="page">
-              <span id="numPages" class="toolbarLabel"></span>
+
+                <div class="splitToolbarButton hiddenSmallView">
+                  <button class="toolbarButton pageUp" title="Previous Page" id="previous" tabindex="13" data-l10n-id="previous">
+                    <span data-l10n-id="previous_label">Previous</span>
+                  </button>
+                  <div class="splitToolbarButtonSeparator"></div>
+                  <button class="toolbarButton pageDown" title="Next Page" id="next" tabindex="14" data-l10n-id="next">
+                    <span data-l10n-id="next_label">Next</span>
+                  </button>
+                </div>
+                <input type="number" id="pageNumber" class="toolbarField pageNumber" title="Page" value="1" size="4" min="1" tabindex="15"
+                  data-l10n-id="page">
+                <span id="numPages" class="toolbarLabel"></span>
               </span>
             </div>
             <div id="toolbarViewerRight">
-                <!-- Lat Long Used to be here -->
+              <!-- Lat Long Used to be here -->
 
               <button id="presentationMode" class="toolbarButton presentationMode hiddenLargeView" title="Switch to Presentation Mode"
                 tabindex="31" data-l10n-id="presentation_mode">
@@ -459,6 +460,27 @@
   <div id="printContainer"></div>
 
   <div style="color: red; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" id="mouse">+</div>
+  <div style="position: fixed; bottom: 3%; left: 50%; transform: translate(-50%, -50%);" id="mouse">
+    <button id="markerBtn">Mark</button>
+  </div>
+
+  <script>
+    document.getElementById('markerBtn').addEventListener('click', function () {
+      var canvas = document.getElementById('page1');
+      var bodyRect = canvas.getBoundingClientRect();
+      var elemRect = document.getElementById('mouse').getBoundingClientRect();
+
+
+      var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
+      var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
+
+      var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+      var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+
+      addClickSimple(offsetX, offsetY, true);
+      redrawSimple();
+    }, false);
+  </script>
 
   <script>
     var canvas;
@@ -466,14 +488,14 @@
     var sLeft = 0;
     var sTop = 0;
     var coordinateArr;
-    
-    document.getElementById('viewerContainer').onscroll = function(){
+
+    document.getElementById('viewerContainer').onscroll = function () {
       // start();
       coordinateArr = mainCoordinates;
       canvas = document.getElementById('page1');
       var bodyRect = canvas.getBoundingClientRect();
       var elemRect = document.getElementById('mouse').getBoundingClientRect();
-        
+
 
       var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
       var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
@@ -481,74 +503,74 @@
       var coorYdiff = coordinateArr[2] - coordinateArr[0];
       var coorXdiff = coordinateArr[5] - coordinateArr[3];
 
-    
+
 
       var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
-      var offsetX = (elemRect.left - bodyRect.left+ (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+      var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
 
       var newx = offsetX * (coorXdiff / canvas.width);
-    var newy = offsetY * (coorYdiff / canvas.height);
+      var newy = offsetY * (coorYdiff / canvas.height);
 
-    document.getElementById('xcoor').value = newx + coordinateArr[3];
-    document.getElementById('ycoor').value = newy + coordinateArr[0];
+      document.getElementById('xcoor').value = newx + coordinateArr[3];
+      document.getElementById('ycoor').value = newy + coordinateArr[0];
 
-        if(offsetX < 0 || offsetX > canvas.width){
-          document.getElementById('xcoor').value = "";
-          document.getElementById('ycoor').value = "";
-        }
+      if (offsetX < 0 || offsetX > canvas.width) {
+        document.getElementById('xcoor').value = "";
+        document.getElementById('ycoor').value = "";
+      }
 
-        if(offsetY < 0 || offsetY > canvas.height){
-          document.getElementById('xcoor').value = "";
-          document.getElementById('ycoor').value = "";
-        }
-        
-        
+      if (offsetY < 0 || offsetY > canvas.height) {
+        document.getElementById('xcoor').value = "";
+        document.getElementById('ycoor').value = "";
+      }
+
+
     }
-    
+
     // IndexedDB Way (Old)
-    function start(){
-  canvas = document.getElementById('page1');
-  context = canvas.getContext('2d');
+    function start() {
+      canvas = document.getElementById('page1');
+      context = canvas.getContext('2d');
 
-    // Let us open our database
-var DBOpenRequest = window.indexedDB.open("CoorDB", 2);
+      // Let us open our database
+      var DBOpenRequest = window.indexedDB.open("CoorDB", 2);
 
-DBOpenRequest.onsuccess = function(event) {    
-  // store the result of opening the database in the db variable.
-  // This is used a lot below
-  db = DBOpenRequest.result;
-    
-  // Run the getData() function to get the data from the database
-  getData();
-};
+      DBOpenRequest.onsuccess = function (event) {
+        // store the result of opening the database in the db variable.
+        // This is used a lot below
+        db = DBOpenRequest.result;
 
-function getData() {
-  // open a read/write db transaction, ready for retrieving the data
-  var transaction = db.transaction(["customers"], "readwrite");
+        // Run the getData() function to get the data from the database
+        getData();
+      };
 
-  // report on the success of the transaction completing, when everything is done
-  transaction.oncomplete = function(event) {
-  };
+      function getData() {
+        // open a read/write db transaction, ready for retrieving the data
+        var transaction = db.transaction(["customers"], "readwrite");
 
-  transaction.onerror = function(event) {
-  };
+        // report on the success of the transaction completing, when everything is done
+        transaction.oncomplete = function (event) {
+        };
 
-  // create an object store on the transaction
-  var objectStore = transaction.objectStore("customers");
+        transaction.onerror = function (event) {
+        };
 
-  // Make a request to get a record by key from the object store
-  var objectStoreRequest = objectStore.get("999");
+        // create an object store on the transaction
+        var objectStore = transaction.objectStore("customers");
 
-  objectStoreRequest.onsuccess = function(event) {
-    // report the success of our request
-    coordinateArr = objectStoreRequest.result.data;
-    console.log(JSON.stringify(coordinateArr));
-  };
+        // Make a request to get a record by key from the object store
+        var objectStoreRequest = objectStore.get("999");
 
-};
+        objectStoreRequest.onsuccess = function (event) {
+          // report the success of our request
+          coordinateArr = objectStoreRequest.result.data;
+          console.log(JSON.stringify(coordinateArr));
+        };
+
+      };
 
 
-}
+    }
 
 
 
@@ -567,22 +589,22 @@ function getData() {
     //   document.getElementById('viewerContainer').scrollTop = - offset;
     //   console.log(- offset);
     // }, 3000);
-    
+
   </script>
 
   <script>
     // Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/pdf-reader/sw.js', { scope: '/pdf-reader/' }).then(function (registration) {
-          // Registration was successful
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function (err) {
-          // Registration failed :(
-          console.log('ServiceWorker registration failed: ', err);
-        });
-      });
-    }
+    // if ('serviceWorker' in navigator) {
+    //   window.addEventListener('load', function () {
+    //     navigator.serviceWorker.register('/pdf-reader/sw.js', { scope: '/pdf-reader/' }).then(function (registration) {
+    //       // Registration was successful
+    //       console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    //     }, function (err) {
+    //       // Registration failed :(
+    //       console.log('ServiceWorker registration failed: ', err);
+    //     });
+    //   });
+    // }
   </script>
 </body>
 
