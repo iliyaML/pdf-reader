@@ -8922,6 +8922,18 @@ var PDFPageView = function () {
       if (this.onBeforeDraw) {
         this.onBeforeDraw();
       }
+
+      console.log('showCanvas');
+      try {
+        //helloWorld();
+        setTimeout(function(){
+          prepareSimpleCanvas();
+        }, 2000);
+        
+      } catch(e){
+        console.log(e);
+      }
+
       return resultPromise;
     }
   }, {
@@ -8947,6 +8959,19 @@ var PDFPageView = function () {
           canvas.removeAttribute('hidden');
           isCanvasHidden = false;
         }
+
+        // Prev location
+        // console.log('showCanvas');
+        // try {
+        //   // helloWorld();
+        //   setTimeout(function(){
+        //     prepareSimpleCanvas();
+        //   }, 3000);
+          
+        // } catch(e){
+        //   console.log(e);
+        // }
+        
       };
       canvasWrapper.appendChild(canvas);
       this.canvas = canvas;
@@ -10150,7 +10175,7 @@ function getDefaultPreferences() {
       "disableStream": false,
       "disableAutoFetch": false,
       "disableFontFace": false,
-      "textLayerMode": 1,
+      "textLayerMode": 0, // Disable Text Layer
       "useOnlyCssZoom": false,
       "externalLinkTarget": 0,
       "renderer": "canvas",

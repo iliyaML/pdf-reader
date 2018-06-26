@@ -502,6 +502,7 @@ var context_simple;
 * Creates a canvas element.
 */
 function prepareSimpleCanvas() {
+	console.log('preparing canvas');
 	// Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
 	// var canvasDiv = document.getElementById('canvasSimpleDiv');
 	// canvas_simple = document.createElement('canvas');
@@ -517,33 +518,67 @@ function prepareSimpleCanvas() {
     var canvas_simple = document.getElementById('page1');
     context_simple = canvas_simple.getContext("2d");
 
+      var bodyRect = canvas_simple.getBoundingClientRect();
+        
+
+      var scaleX = canvas_simple.width / bodyRect.width;    // relationship bitmap vs. element for X
+      var scaleY = canvas_simple.height / bodyRect.height;  // relationship bitmap vs. element for Y
+
 	// Add mouse events
 	// ----------------
 	$('#page1').mousedown(function (e) {
 		// Mouse down location
 		var mouseX = e.pageX - this.offsetLeft;
-		var mouseY = e.pageY - this.offsetTop;
+        var mouseY = e.pageY - this.offsetTop;
+        
+        // "Mouse"
+        var canvas = document.getElementById('page1');
+        var bodyRect = canvas.getBoundingClientRect();
+        var elemRect = document.getElementById('mouse').getBoundingClientRect();
+          
+  
+        var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
+        var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
+  
+        var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+        var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
 
 		paint_simple = true;
-		addClickSimple(mouseX, mouseY, false);
-		redrawSimple();
+		addClickSimple(offsetX, offsetY, false);
+        redrawSimple();
+        
+        console.log('mousedown');
 	});
 
 	$('#page1').mousemove(function (e) {
 		if (paint_simple) {
-			addClickSimple(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-			redrawSimple();
+            var canvas = document.getElementById('page1');
+        var bodyRect = canvas.getBoundingClientRect();
+        var elemRect = document.getElementById('mouse').getBoundingClientRect();
+          
+  
+        var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
+        var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
+  
+        var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+        var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+
+			addClickSimple(offsetX, offsetY, true);
+            redrawSimple();
+            console.log('mousemove');
 		}
 	});
 
 	$('#page1').mouseup(function (e) {
 		paint_simple = false;
 		redrawSimple();
-		cPush();
+        cPush();
+        console.log('mouseup');
 	});
 
 	$('#page1').mouseleave(function (e) {
-		paint_simple = false;
+        paint_simple = false;
+        console.log('mouseleave');
 		// cPush();
 	});
 
@@ -553,7 +588,8 @@ function prepareSimpleCanvas() {
 		clickY_simple = new Array();
 		clickDrag_simple = new Array();
 		click_simpleColors = new Array();
-		clearCanvas_simple();
+        clearCanvas_simple();
+        console.log('mousedown');
 	});
 
 	// Add touch event listeners to canvas element
@@ -598,13 +634,13 @@ function addClickSimple(x, y, dragging) {
 	clickX_simple.push(x);
 	clickY_simple.push(y);
 	clickDrag_simple.push(dragging);
-	click_simpleColors.push(cur_simpleColors);
+	// click_simpleColors.push(cur_simpleColors);
 }
 
 function clearCanvas_simple() {
-	context_simple.clearRect(0, 0, canvasWidth, canvasHeight);
+	// context_simple.clearRect(0, 0, 1200, 600);
 
-	context_simple.drawImage(bgImg, 0, 0);
+	// context_simple.drawImage(bgImg, 0, 0);
 }
 
 function redrawSimple() {
@@ -614,17 +650,20 @@ function redrawSimple() {
 
 	// context_simple.drawImage(bgImg, 0, 0);
 
-	var hRatio = canvasTest.width / bgImg.width;
-	var vRatio = canvasTest.height / bgImg.height;
-	var ratio = Math.min(hRatio, vRatio);
-	var centerShift_x = (canvasTest.width - bgImg.width * ratio) / 2;
-	var centerShift_y = (canvasTest.height - bgImg.height * ratio) / 2;
-	context.clearRect(0, 0, canvasTest.width, canvasTest.height);
-	context.drawImage(bgImg, 0, 0, bgImg.width, bgImg.height,
-		centerShift_x, centerShift_y, bgImg.width * ratio, bgImg.height * ratio);
+	// var hRatio = canvasTest.width / bgImg.width;
+	// var vRatio = canvasTest.height / bgImg.height;
+	// var ratio = Math.min(hRatio, vRatio);
+	// var centerShift_x = (canvasTest.width - bgImg.width * ratio) / 2;
+	// var centerShift_y = (canvasTest.height - bgImg.height * ratio) / 2;
+	// context.clearRect(0, 0, canvasTest.width, canvasTest.height);
+	// context.drawImage(bgImg, 0, 0, bgImg.width, bgImg.height,
+	// 	centerShift_x, centerShift_y, bgImg.width * ratio, bgImg.height * ratio);
 
 	// var radius = 5;
-	var radius = 3;
+
+	console.log('Redrawing');
+
+	var radius = 10;
 	//context_simple.strokeStyle = cur_simpleColors; // "#df4b26"
 	context_simple.lineJoin = "round";
 	context_simple.lineWidth = radius;
@@ -637,8 +676,9 @@ function redrawSimple() {
 			context_simple.moveTo(clickX_simple[i] - 1, clickY_simple[i]);
 		}
 		context_simple.lineTo(clickX_simple[i], clickY_simple[i]);
-		context_simple.closePath();
-		context.strokeStyle = click_simpleColors[i];
+        context_simple.closePath();
+        context_simple.strokeStyle = "red";
+		//context.strokeStyle = click_simpleColors[i];
 		context_simple.stroke();
 	}
 }
@@ -1280,6 +1320,6 @@ function redrawSimpleOutline() {
 
 setTimeout(function(){
     executeArticleScript();
-}, 10000);
+}, 2000);
 
 /**/

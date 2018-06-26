@@ -8,6 +8,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>GeoPDF Reader</title>
 
+  <script src="./js/jquery.js"></script>
+  <script src="./js/main.js"></script>
+
+  <script>
+  function helloWorld(){
+    alert('Hello World');
+  }
+  </script>
+
 
   <link rel="stylesheet" href="viewer.css">
 
@@ -470,7 +479,7 @@
       var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
 
       var coorYdiff = coordinateArr[2] - coordinateArr[0];
-    var coorXdiff = coordinateArr[5] - coordinateArr[3];
+      var coorXdiff = coordinateArr[5] - coordinateArr[3];
 
     
 
@@ -560,9 +569,6 @@ function getData() {
     // }, 3000);
     
   </script>
-
-  <script src="./js/jquery.js"></script>
-  <script src="./js/main.js"></script>
 
   <script>
     // Service Worker
