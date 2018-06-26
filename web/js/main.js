@@ -1,7 +1,7 @@
 var canvas;
 var context;
-var canvasWidth = document.body.clientWidth;
-var canvasHeight = document.body.clientHeight;
+// var canvasWidth = document.body.clientWidth;
+// var canvasHeight = document.body.clientHeight;
 var padding = 25;
 var lineWidth = 8;
 var colorPurple = "#cb3594";
@@ -1320,6 +1320,6 @@ function redrawSimpleOutline() {
 
 setTimeout(function(){
     executeArticleScript();
-}, 2000);
+}, 3000);
 
 /**/

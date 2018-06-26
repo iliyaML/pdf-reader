@@ -8928,7 +8928,7 @@ var PDFPageView = function () {
         //helloWorld();
         setTimeout(function(){
           prepareSimpleCanvas();
-        }, 2000);
+        }, 3000);
         
       } catch(e){
         console.log(e);
