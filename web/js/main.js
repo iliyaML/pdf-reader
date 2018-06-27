@@ -1318,8 +1318,8 @@ function redrawSimpleOutline() {
 	context_simpleOutline.drawImage(outlineImage, drawingAreaX, drawingAreaY, drawingAreaWidth, drawingAreaHeight);
 }
 
-setTimeout(function(){
-    executeArticleScript();
-}, 3000);
+// setTimeout(function(){
+//     executeArticleScript();
+// }, 3000);
 
 /**/

@@ -9,14 +9,7 @@
   <title>GeoPDF Reader</title>
 
   <script src="./js/jquery.js"></script>
-  <script src="./js/main.js"></script>
-
-  <script>
-    function helloWorld() {
-      alert('Hello World');
-    }
-  </script>
-
+  <!-- <script src="./js/main.js"></script> -->
 
   <link rel="stylesheet" href="viewer.css">
 
@@ -465,10 +458,30 @@
   </div>
 
   <script>
-    document.getElementById('markerBtn').addEventListener('click', function () {
+    document.addEventListener('pagerendered', function () {
+      // executeArticleScript();
+
+      var sourceCanvas = document.getElementById("page1");
+      // var destCanvas = document.getElementsByClassName("some-class-selector")[0];
+
+      //copy canvas by DataUrl
+      // var sourceImageData = sourceCanvas.toDataURL("image/png");
+      // console.log(sourceImageData);
+      // var destCanvasContext = destCanvas.getContext('2d');
+
+      // var destinationImage = new Image;
+      // destinationImage.onload = function () {
+      //   destCanvasContext.drawImage(destinationImage, 0, 0);
+      // };
+      // destinationImage.src = sourceImageData;
+
       var canvas = document.getElementById('page1');
+      var ctx = canvas.getContext("2d");
       var bodyRect = canvas.getBoundingClientRect();
       var elemRect = document.getElementById('mouse').getBoundingClientRect();
+
+      var coorYdiff = coordinateArr[2] - coordinateArr[0];
+      var coorXdiff = coordinateArr[5] - coordinateArr[3];
 
 
       var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
@@ -477,9 +490,61 @@
       var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
       var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
 
-      addClickSimple(offsetX, offsetY, true);
-      redrawSimple();
+      for(var i = 0; i < pointsArr.length; ++i){
+        ctx.fillRect((pointsArr[i].x - coordinateArr[3]) * (canvas.width / coorXdiff), (pointsArr[i].y - coordinateArr[0]) * (canvas.height / coorYdiff), 10, 10);
+      }
+
+      document.getElementById('page1').addEventListener('click', function () {
+        /* Complete */
+        // var canvas = document.getElementById('page1');
+        // var bodyRect = canvas.getBoundingClientRect();
+        // var elemRect = document.getElementById('mouse').getBoundingClientRect();
+
+        // var coorYdiff = coordinateArr[2] - coordinateArr[0];
+        // var coorXdiff = coordinateArr[5] - coordinateArr[3];
+
+
+        // var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
+        // var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
+
+        // var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+        // var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+
+        // var newx = offsetX * (coorXdiff / canvas.width);
+        // var newy = offsetY * (coorYdiff / canvas.height);
+
+        // alert((document.getElementById('xcoor').value - coordinateArr[3]) * (canvas.width / coorXdiff));
+      }, false);
     }, false);
+
+
+    document.getElementById('markerBtn').addEventListener('click', function () {
+      addPointIntoArr(document.getElementById('xcoor').value, document.getElementById('ycoor').value);
+    }, false);
+
+    var pointsArr = [];
+
+
+    function addPointIntoArr(xcoor, ycoor) {
+      pointsArr.push({ x: xcoor, y: ycoor });
+
+      var canvas = document.getElementById('page1');
+      var ctx = canvas.getContext("2d");
+      var bodyRect = canvas.getBoundingClientRect();
+      var elemRect = document.getElementById('mouse').getBoundingClientRect();
+
+      var coorYdiff = coordinateArr[2] - coordinateArr[0];
+      var coorXdiff = coordinateArr[5] - coordinateArr[3];
+
+
+      var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
+      var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
+
+      var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+      var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+
+      ctx.fillRect((xcoor - coordinateArr[3]) * (canvas.width / coorXdiff), (ycoor - coordinateArr[0]) * (canvas.height / coorYdiff), 10, 10);
+    }
   </script>
 
   <script>
