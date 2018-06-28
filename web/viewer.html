@@ -498,17 +498,23 @@
       mapAreaCtx.clearRect(0, 0, mapArea.width, mapArea.height);
       redraw();
 
-      // var dragging = false;
+      var dragging = false;
 
-      // document.getElementById('mapArea').addEventListener('touchmove', function (evt) {
+      document.getElementById('mapArea').addEventListener('touchstart', function (evt) {
+        dragging = false;
+        // alert();
+      }, false);
 
-      // }, false);
+      document.getElementById('mapArea').addEventListener('touchmove', function (evt) {
+        dragging = true;
+        // alert();
+      }, false);
 
       document.getElementById('mapArea').addEventListener('touchend', function (evt) {
         //evt.preventDefault();
 
-
-        var bodyRect = canvas.getBoundingClientRect();
+        if(!dragging){
+          var bodyRect = canvas.getBoundingClientRect();
         var elemRect = document.getElementById('mouse').getBoundingClientRect();
 
         var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
@@ -517,8 +523,8 @@
         var coorYdiff = mainCoordinates[2] - mainCoordinates[0];
         var coorXdiff = mainCoordinates[5] - mainCoordinates[3];
 
-        var offsetY = (evt.touches[0].clientY - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
-        var offsetX = (evt.touches[0].clientX - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+        var offsetY = (evt.changedTouches[0].clientY - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+        var offsetX = (evt.changedTouches[0].clientX - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
 
         var mouseX = offsetX * (coorXdiff / canvas.width);
         var mouseY = offsetY * (coorYdiff / canvas.height);
@@ -536,6 +542,9 @@
             
           }
         }
+        }
+
+
       }, false);
 
       document.getElementById('markerBtn').addEventListener('click', function () {
