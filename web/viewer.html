@@ -498,7 +498,13 @@
       mapAreaCtx.clearRect(0, 0, mapArea.width, mapArea.height);
       redraw();
 
-      document.getElementById('mapArea').addEventListener('touchstart', function (evt) {
+      // var dragging = false;
+
+      // document.getElementById('mapArea').addEventListener('touchmove', function (evt) {
+
+      // }, false);
+
+      document.getElementById('mapArea').addEventListener('touchend', function (evt) {
         //evt.preventDefault();
 
 
