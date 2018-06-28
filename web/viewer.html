@@ -499,6 +499,9 @@
       redraw();
 
       document.getElementById('mapArea').addEventListener('touchstart', function (evt) {
+        evt.preventDefault();
+
+
         var bodyRect = canvas.getBoundingClientRect();
         var elemRect = document.getElementById('mouse').getBoundingClientRect();
 
@@ -508,8 +511,8 @@
         var coorYdiff = mainCoordinates[2] - mainCoordinates[0];
         var coorXdiff = mainCoordinates[5] - mainCoordinates[3];
 
-        var offsetY = (evt.clientY - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
-        var offsetX = (evt.clientX - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+        var offsetY = (evt.touches[0].clientY - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+        var offsetX = (evt.touches[0].clientX - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
 
         var mouseX = offsetX * (coorXdiff / canvas.width);
         var mouseY = offsetY * (coorYdiff / canvas.height);
@@ -517,7 +520,7 @@
         for (var i = 0; i < shapes.length; i++) {
           var s = shapes[i];
           definePath(s.points);
-          // alert();
+          //alert(offsetX, offsetY);
           if (mapAreaCtx.isPointInPath(offsetX, offsetY)) {
 
 
