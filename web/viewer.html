@@ -454,8 +454,8 @@
 
   <div style="color: red; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" id="mouse">+</div>
   <div style="position: fixed; bottom: 3%; left: 50%; transform: translate(-50%, -50%);" id="mouse">
-    <button id="markerBtn">Mark</button>
-    <button id="endBtn">End</button>
+    <button id="markerBtn" class="toolbarButton">Mark</button>
+    <button id="endBtn" class="toolbarButton">End</button>
   </div>
 
   <script>
@@ -465,29 +465,69 @@
     var mapAreaCtx;
     var shapes = [];
 
+    // Main canvas listener
     document.addEventListener('pagerendered', function () {
+      // Get reference to main canvas
       canvas = document.getElementById('page1');
-      ctx = canvas.getContext("2d");
+      ctx = canvas.getContext('2d');
 
       // Create overlaying map area
-      mapArea = document.createElement('canvas');
-      mapAreaCtx = mapArea.getContext('2d');
-      mapArea.id = "mapArea";
-      mapArea.className = "textLayer";
-      mapArea.width = canvas.width;
-      mapArea.height = canvas.height;
-      mapArea.setAttribute('style', canvas.getAttribute('style'));
-
-      document.querySelector('.canvasWrapper').appendChild(mapArea);
+      if (!document.getElementById('mapArea')) {
+        mapArea = document.createElement('canvas');
+        mapAreaCtx = mapArea.getContext('2d');
+        mapArea.id = "mapArea";
+        mapArea.className = "textLayer";
+        mapArea.width = canvas.width;
+        mapArea.height = canvas.height;
+        mapArea.setAttribute('style', canvas.getAttribute('style'));
+        document.querySelector('.canvasWrapper').appendChild(mapArea);
+      } else {
+        mapArea.setAttribute('style', canvas.getAttribute('style'));
+      }
 
       var coor = getCoordinates();
-
       document.getElementById('xcoor').value = coor.x;
       document.getElementById('ycoor').value = coor.y;
 
-      for (var i = 0; i < pointsArr.length; ++i) {
-        ctx.fillRect((pointsArr[i].x - coordinateArr[3]) * (canvas.width / coorXdiff), (pointsArr[i].y - coordinateArr[0]) * (canvas.height / coorYdiff), 10, 10);
-      }
+      // for (var i = 0; i < pointsArr.length; ++i) {
+      //   ctx.fillRect((pointsArr[i].x - coordinateArr[3]) * (canvas.width / coorXdiff), (pointsArr[i].y - coordinateArr[0]) * (canvas.height / coorYdiff), 10, 10);
+      // }
+
+      // For resizing purposes
+      // Clear and redraw mapArea
+      mapAreaCtx.clearRect(0, 0, mapArea.width, mapArea.height);
+      redraw();
+
+      document.getElementById('mapArea').addEventListener('touchstart', function (evt) {
+        var bodyRect = canvas.getBoundingClientRect();
+        var elemRect = document.getElementById('mouse').getBoundingClientRect();
+
+        var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
+        var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
+
+        var coorYdiff = mainCoordinates[2] - mainCoordinates[0];
+        var coorXdiff = mainCoordinates[5] - mainCoordinates[3];
+
+        var offsetY = (evt.clientY - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+        var offsetX = (evt.clientX - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+
+        var mouseX = offsetX * (coorXdiff / canvas.width);
+        var mouseY = offsetY * (coorYdiff / canvas.height);
+
+        for (var i = 0; i < shapes.length; i++) {
+          var s = shapes[i];
+          definePath(s.points);
+          // alert();
+          if (mapAreaCtx.isPointInPath(offsetX, offsetY)) {
+
+
+              // document.getElementById('message').value = s.message;
+              alert(s.message);
+              // break;
+            
+          }
+        }
+      }, false);
 
       document.getElementById('markerBtn').addEventListener('click', function () {
         addPointIntoArr(document.getElementById('xcoor').value, document.getElementById('ycoor').value);
@@ -500,7 +540,7 @@
           shapes.push({
             points: pointsArr.slice(),
             cursor: 1,
-            message: 'asdf'
+            message: 'asdf' + shapes.length
           });
 
 
@@ -547,8 +587,8 @@
       return { x: newx + mainCoordinates[3], y: newy + mainCoordinates[0] };
     }
 
-    function getCanvasCoordinates(){
-      
+    function getCanvasCoordinates() {
+
     }
 
 
@@ -581,7 +621,7 @@
       }
     }
 
-    function transform(xcoor, ycoor, number){
+    function transform(xcoor, ycoor, number) {
 
       var bodyRect = canvas.getBoundingClientRect();
       var elemRect = document.getElementById('mouse').getBoundingClientRect();
@@ -596,10 +636,9 @@
       var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
       var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
 
-      
 
-      if(number === 1){
-        console.log((xcoor - mainCoordinates[3]) * (canvas.width / coorXdiff));
+
+      if (number === 1) {
         mapAreaCtx.moveTo((xcoor - mainCoordinates[3]) * (canvas.width / coorXdiff), (ycoor - mainCoordinates[0]) * (canvas.height / coorYdiff));
       } else {
         mapAreaCtx.lineTo((xcoor - mainCoordinates[3]) * (canvas.width / coorXdiff), (ycoor - mainCoordinates[0]) * (canvas.height / coorYdiff));
@@ -608,9 +647,6 @@
 
 
     function definePath(p) {
-      var canvas = document.getElementById('page1');
-      var ctx = canvas.getContext("2d");
-
       mapAreaCtx.beginPath();
       // ctx.moveTo(p[0].x, p[0].y);
       transform(p[0].x, p[0].y, 1);
