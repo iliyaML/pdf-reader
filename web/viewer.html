@@ -455,86 +455,112 @@
   <div style="color: red; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" id="mouse">+</div>
   <div style="position: fixed; bottom: 3%; left: 50%; transform: translate(-50%, -50%);" id="mouse">
     <button id="markerBtn">Mark</button>
+    <button id="endBtn">End</button>
   </div>
 
   <script>
+    var canvas;
+    var ctx;
+    var mapArea;
+    var mapAreaCtx;
+    var shapes = [];
+
     document.addEventListener('pagerendered', function () {
-      // executeArticleScript();
+      canvas = document.getElementById('page1');
+      ctx = canvas.getContext("2d");
 
-      var sourceCanvas = document.getElementById("page1");
-      // var destCanvas = document.getElementsByClassName("some-class-selector")[0];
+      // Create overlaying map area
+      mapArea = document.createElement('canvas');
+      mapAreaCtx = mapArea.getContext('2d');
+      mapArea.id = "mapArea";
+      mapArea.className = "textLayer";
+      mapArea.width = canvas.width;
+      mapArea.height = canvas.height;
+      mapArea.setAttribute('style', canvas.getAttribute('style'));
 
-      //copy canvas by DataUrl
-      // var sourceImageData = sourceCanvas.toDataURL("image/png");
-      // console.log(sourceImageData);
-      // var destCanvasContext = destCanvas.getContext('2d');
+      document.querySelector('.canvasWrapper').appendChild(mapArea);
 
-      // var destinationImage = new Image;
-      // destinationImage.onload = function () {
-      //   destCanvasContext.drawImage(destinationImage, 0, 0);
-      // };
-      // destinationImage.src = sourceImageData;
+      var coor = getCoordinates();
 
-      var canvas = document.getElementById('page1');
-      var ctx = canvas.getContext("2d");
-      var bodyRect = canvas.getBoundingClientRect();
-      var elemRect = document.getElementById('mouse').getBoundingClientRect();
+      document.getElementById('xcoor').value = coor.x;
+      document.getElementById('ycoor').value = coor.y;
 
-      var coorYdiff = coordinateArr[2] - coordinateArr[0];
-      var coorXdiff = coordinateArr[5] - coordinateArr[3];
-
-
-      var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
-      var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
-
-      var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
-      var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
-
-      for(var i = 0; i < pointsArr.length; ++i){
+      for (var i = 0; i < pointsArr.length; ++i) {
         ctx.fillRect((pointsArr[i].x - coordinateArr[3]) * (canvas.width / coorXdiff), (pointsArr[i].y - coordinateArr[0]) * (canvas.height / coorYdiff), 10, 10);
       }
 
-      document.getElementById('page1').addEventListener('click', function () {
-        /* Complete */
-        // var canvas = document.getElementById('page1');
-        // var bodyRect = canvas.getBoundingClientRect();
-        // var elemRect = document.getElementById('mouse').getBoundingClientRect();
-
-        // var coorYdiff = coordinateArr[2] - coordinateArr[0];
-        // var coorXdiff = coordinateArr[5] - coordinateArr[3];
-
-
-        // var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
-        // var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
-
-        // var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
-        // var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
-
-        // var newx = offsetX * (coorXdiff / canvas.width);
-        // var newy = offsetY * (coorYdiff / canvas.height);
-
-        // alert((document.getElementById('xcoor').value - coordinateArr[3]) * (canvas.width / coorXdiff));
+      document.getElementById('markerBtn').addEventListener('click', function () {
+        addPointIntoArr(document.getElementById('xcoor').value, document.getElementById('ycoor').value);
       }, false);
-    }, false);
+
+      document.getElementById('endBtn').addEventListener('click', function () {
+        var canvas = document.getElementById('page1');
+        var ctx = canvas.getContext("2d");
+        if (pointsArr.length > 2) {
+          shapes.push({
+            points: pointsArr.slice(),
+            cursor: 1,
+            message: 'asdf'
+          });
 
 
-    document.getElementById('markerBtn').addEventListener('click', function () {
-      addPointIntoArr(document.getElementById('xcoor').value, document.getElementById('ycoor').value);
+        }
+
+        pointsArr = [];
+
+        mapAreaCtx.clearRect(0, 0, mapArea.width, mapArea.height);
+
+        redraw();
+      }, false);
+
     }, false);
 
     var pointsArr = [];
 
-
-    function addPointIntoArr(xcoor, ycoor) {
-      pointsArr.push({ x: xcoor, y: ycoor });
-
-      var canvas = document.getElementById('page1');
-      var ctx = canvas.getContext("2d");
+    function getCoordinates() {
       var bodyRect = canvas.getBoundingClientRect();
       var elemRect = document.getElementById('mouse').getBoundingClientRect();
 
-      var coorYdiff = coordinateArr[2] - coordinateArr[0];
-      var coorXdiff = coordinateArr[5] - coordinateArr[3];
+      var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
+      var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
+
+      var coorYdiff = mainCoordinates[2] - mainCoordinates[0];
+      var coorXdiff = mainCoordinates[5] - mainCoordinates[3];
+
+      var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+      var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+
+      var newx = offsetX * (coorXdiff / canvas.width);
+      var newy = offsetY * (coorYdiff / canvas.height);
+
+      // Reset values if outside of boundary
+      if (offsetX < 0 || offsetX > canvas.width) {
+        document.getElementById('xcoor').value = "";
+        document.getElementById('ycoor').value = "";
+      }
+
+      if (offsetY < 0 || offsetY > canvas.height) {
+        document.getElementById('xcoor').value = "";
+        document.getElementById('ycoor').value = "";
+      }
+
+      return { x: newx + mainCoordinates[3], y: newy + mainCoordinates[0] };
+    }
+
+    function getCanvasCoordinates(){
+      
+    }
+
+
+    function addPointIntoArr(xcoor, ycoor) {
+
+      pointsArr.push({ x: xcoor, y: ycoor });
+
+      var bodyRect = canvas.getBoundingClientRect();
+      var elemRect = document.getElementById('mouse').getBoundingClientRect();
+
+      var coorYdiff = mainCoordinates[2] - mainCoordinates[0];
+      var coorXdiff = mainCoordinates[5] - mainCoordinates[3];
 
 
       var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
@@ -543,15 +569,61 @@
       var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
       var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
 
-      ctx.fillRect((xcoor - coordinateArr[3]) * (canvas.width / coorXdiff), (ycoor - coordinateArr[0]) * (canvas.height / coorYdiff), 10, 10);
+      mapAreaCtx.fillRect((xcoor - mainCoordinates[3]) * (canvas.width / coorXdiff), (ycoor - mainCoordinates[0]) * (canvas.height / coorYdiff), 10, 10);
+    }
+
+
+    function redraw() {
+      for (var i = 0; i < shapes.length; i++) {
+        var s = shapes[i];
+        definePath(s.points);
+        mapAreaCtx.stroke();
+      }
+    }
+
+    function transform(xcoor, ycoor, number){
+
+      var bodyRect = canvas.getBoundingClientRect();
+      var elemRect = document.getElementById('mouse').getBoundingClientRect();
+
+      var coorYdiff = mainCoordinates[2] - mainCoordinates[0];
+      var coorXdiff = mainCoordinates[5] - mainCoordinates[3];
+
+
+      var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
+      var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
+
+      var offsetY = (elemRect.top - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+      var offsetX = (elemRect.left - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+
+      
+
+      if(number === 1){
+        console.log((xcoor - mainCoordinates[3]) * (canvas.width / coorXdiff));
+        mapAreaCtx.moveTo((xcoor - mainCoordinates[3]) * (canvas.width / coorXdiff), (ycoor - mainCoordinates[0]) * (canvas.height / coorYdiff));
+      } else {
+        mapAreaCtx.lineTo((xcoor - mainCoordinates[3]) * (canvas.width / coorXdiff), (ycoor - mainCoordinates[0]) * (canvas.height / coorYdiff));
+      }
+    }
+
+
+    function definePath(p) {
+      var canvas = document.getElementById('page1');
+      var ctx = canvas.getContext("2d");
+
+      mapAreaCtx.beginPath();
+      // ctx.moveTo(p[0].x, p[0].y);
+      transform(p[0].x, p[0].y, 1);
+      for (var i = 1; i < p.length; i++) {
+        // ctx.lineTo(p[i].x, p[i].y);
+        transform(p[i].x, p[i].y, 2);
+      }
+      mapAreaCtx.closePath();
     }
   </script>
 
   <script>
     var canvas;
-    var context;
-    var sLeft = 0;
-    var sTop = 0;
     var coordinateArr;
 
     document.getElementById('viewerContainer').onscroll = function () {
@@ -591,70 +663,6 @@
 
 
     }
-
-    // IndexedDB Way (Old)
-    function start() {
-      canvas = document.getElementById('page1');
-      context = canvas.getContext('2d');
-
-      // Let us open our database
-      var DBOpenRequest = window.indexedDB.open("CoorDB", 2);
-
-      DBOpenRequest.onsuccess = function (event) {
-        // store the result of opening the database in the db variable.
-        // This is used a lot below
-        db = DBOpenRequest.result;
-
-        // Run the getData() function to get the data from the database
-        getData();
-      };
-
-      function getData() {
-        // open a read/write db transaction, ready for retrieving the data
-        var transaction = db.transaction(["customers"], "readwrite");
-
-        // report on the success of the transaction completing, when everything is done
-        transaction.oncomplete = function (event) {
-        };
-
-        transaction.onerror = function (event) {
-        };
-
-        // create an object store on the transaction
-        var objectStore = transaction.objectStore("customers");
-
-        // Make a request to get a record by key from the object store
-        var objectStoreRequest = objectStore.get("999");
-
-        objectStoreRequest.onsuccess = function (event) {
-          // report the success of our request
-          coordinateArr = objectStoreRequest.result.data;
-          console.log(JSON.stringify(coordinateArr));
-        };
-
-      };
-
-
-    }
-
-
-
-    // setTimeout(function(){
-    //   // var canvas = document.getElementById('page1');
-    //   // var bodyRect = canvas.getBoundingClientRect();
-    //   // var elemRect = document.body.getBoundingClientRect();
-    //   // var offset   = elemRect.left - bodyRect.left;
-
-
-    //   var bodyRect = document.body.getBoundingClientRect(),
-    //   elemRect = document.getElementById('page1').getBoundingClientRect(),
-    //   offset   = elemRect.top - bodyRect.top;
-
-
-    //   document.getElementById('viewerContainer').scrollTop = - offset;
-    //   console.log(- offset);
-    // }, 3000);
-
   </script>
 
   <script>
