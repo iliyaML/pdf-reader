@@ -8,8 +8,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>GeoPDF Reader</title>
 
-  <script src="./js/jquery.js"></script>
+  <!-- <script src="./js/jquery.js"></script> -->
   <!-- <script src="./js/main.js"></script> -->
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+    crossorigin="anonymous">
 
   <link rel="stylesheet" href="viewer.css">
 
@@ -212,6 +215,11 @@
             data-l10n-id="document_properties">
             <span data-l10n-id="document_properties_label">Document Properties</span>
           </button>
+
+          <!-- Button trigger modal
+          <button type="button" class="secondaryToolbarButton documentProperties" data-toggle="modal" data-target="#exampleModalCenter">
+            Open
+          </button> -->
         </div>
       </div>
       <!-- secondaryToolbar -->
@@ -458,6 +466,53 @@
     <button id="endBtn" class="toolbarButton">End</button>
   </div>
 
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Information</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Title:
+          <br /> Information:
+          <span id="infoField"></span>
+          <br /> Location:
+          <br /> Time:
+          <br /> -->
+          <form>
+            <div class="form-group">
+              <label for="title-name" class="col-form-label">Title:</label>
+              <input type="text" class="form-control" id="title-name">
+            </div>
+            <div class="form-group">
+              <label for="information-name" class="col-form-label">Information:</label>
+              <input type="text" class="form-control" id="information-name">
+            </div>
+            <div class="form-group">
+              <label for="description-text" class="col-form-label">Description:</label>
+              <textarea class="form-control" id="description-text"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     var canvas;
     var ctx;
@@ -471,7 +526,7 @@
       canvas = document.getElementById('page1');
       ctx = canvas.getContext('2d');
 
-      // Create overlaying map area
+      // Create overlaying map area if it doesn't exist
       if (!document.getElementById('mapArea')) {
         mapArea = document.createElement('canvas');
         mapAreaCtx = mapArea.getContext('2d');
@@ -513,35 +568,44 @@
       document.getElementById('mapArea').addEventListener('touchend', function (evt) {
         //evt.preventDefault();
 
-        if(!dragging){
+        if (!dragging) {
           var bodyRect = canvas.getBoundingClientRect();
-        var elemRect = document.getElementById('mouse').getBoundingClientRect();
+          var elemRect = document.getElementById('mouse').getBoundingClientRect();
 
-        var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
-        var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
+          var scaleX = canvas.width / bodyRect.width;    // relationship bitmap vs. element for X
+          var scaleY = canvas.height / bodyRect.height;  // relationship bitmap vs. element for Y
 
-        var coorYdiff = mainCoordinates[2] - mainCoordinates[0];
-        var coorXdiff = mainCoordinates[5] - mainCoordinates[3];
+          var coorYdiff = mainCoordinates[2] - mainCoordinates[0];
+          var coorXdiff = mainCoordinates[5] - mainCoordinates[3];
 
-        var offsetY = (evt.changedTouches[0].clientY - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
-        var offsetX = (evt.changedTouches[0].clientX - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
+          var offsetY = (evt.changedTouches[0].clientY - bodyRect.top + (document.getElementById('mouse').offsetHeight / 2)) * scaleY;
+          var offsetX = (evt.changedTouches[0].clientX - bodyRect.left + (document.getElementById('mouse').offsetWidth / 2)) * scaleX;
 
-        var mouseX = offsetX * (coorXdiff / canvas.width);
-        var mouseY = offsetY * (coorYdiff / canvas.height);
+          var mouseX = offsetX * (coorXdiff / canvas.width);
+          var mouseY = offsetY * (coorYdiff / canvas.height);
 
-        for (var i = 0; i < shapes.length; i++) {
-          var s = shapes[i];
-          definePath(s.points);
-          //alert(offsetX, offsetY);
-          if (mapAreaCtx.isPointInPath(offsetX, offsetY)) {
+          for (var i = 0; i < shapes.length; i++) {
+            var s = shapes[i];
+            definePath(s.points);
+            //alert(offsetX, offsetY);
+            if (mapAreaCtx.isPointInPath(offsetX, offsetY)) {
 
 
               // document.getElementById('message').value = s.message;
-              alert(s.message);
-              // break;
-            
+
+              $('#exampleModalCenter').modal('show');
+
+              $('#exampleModalCenter').off('shown.bs.modal').on('shown.bs.modal', function (e) {
+                document.getElementById('information-name').value = s.message;
+                // alert(s.message);
+              });
+
+              // alert(s.message);
+
+              break;
+
+            }
           }
-        }
         }
 
 
@@ -558,11 +622,17 @@
           shapes.push({
             points: pointsArr.slice(),
             cursor: 1,
-            message: 'asdf' + shapes.length
+            message: 'Message ' + (shapes.length + 1)
           });
 
 
         }
+
+        $('#exampleModalCenter').modal('show');
+
+        $('#exampleModalCenter').off('shown.bs.modal').on('shown.bs.modal', function (e) {
+          document.getElementById('information-name').value = shapes[shapes.length - 1].message;
+        });
 
         pointsArr = [];
 
