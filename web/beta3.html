@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Leaflet</title>
+    <title>GeoPDF Reader</title>
     <script>var mainCoordinates;</script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
         crossorigin="" />
@@ -145,9 +145,7 @@
                 var renderTask = page.render(renderContext);
                 renderTask.then(function () {
                     console.log('Page rendered');
-                    var png = canvas.toDataURL("image/png");
-                    console.log(png);
-
+                    
                     var center = {
                         lat: (mainCoordinates[0] + mainCoordinates[4]) / 2,
                         lng: (mainCoordinates[1] + mainCoordinates[5]) / 2
@@ -158,10 +156,10 @@
                     var newMarker = new L.marker([center.lat, center.lng]).addTo(mymap);
 
 
-                    var imageUrl = png,
+                    var imageUrl = canvas.toDataURL("image/png"),
                         imageBounds = [[mainCoordinates[0], mainCoordinates[1]], [mainCoordinates[4], mainCoordinates[5]]];
                     L.imageOverlay(imageUrl, imageBounds, {
-                        opacity: 0.8
+                        opacity: 0.7
                     }).addTo(mymap);
                 });
             });
