@@ -62,8 +62,9 @@
     <script src="js/leaflet-measure.js"></script>
     <script>
         // var mymap = L.map('mapid').setView([3.19075, 101.73417], 17);
+
         var mymap = L.map('mapid', {
-            center: [3.19075, 101.73417],
+            // center: [center.lat, center.lng],
             zoom: 17,
             measureControl: true
         });
@@ -74,7 +75,7 @@
             accessToken: 'pk.eyJ1IjoiaWxpeWFtbCIsImEiOiJjamo0ejR2cGQwMTltM3BvMzVhNDJ5dGNhIn0.Ye8kL5Duo_fF9Vtui2EagA',
             measureControl: true
         }).addTo(mymap);
-        var newMarker = new L.marker([3.19052, 101.73396]).addTo(mymap);
+        
     </script>
     <script>
         (function (L, document) {
@@ -145,6 +146,17 @@
                 renderTask.then(function () {
                     console.log('Page rendered');
                     var png = canvas.toDataURL("image/png");
+                    console.log(png);
+
+                    var center = {
+                        lat: (mainCoordinates[0] + mainCoordinates[4]) / 2,
+                        lng: (mainCoordinates[1] + mainCoordinates[5]) / 2
+                    }
+
+                    // L.setView([center.lat, center.lng], 17);
+                    mymap.panTo([center.lat, center.lng]);
+                    var newMarker = new L.marker([center.lat, center.lng]).addTo(mymap);
+
 
                     var imageUrl = png,
                         imageBounds = [[mainCoordinates[0], mainCoordinates[1]], [mainCoordinates[4], mainCoordinates[5]]];
