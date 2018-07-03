@@ -61,10 +61,7 @@
 
     <script src="js/leaflet-measure.js"></script>
     <script>
-        // var mymap = L.map('mapid').setView([3.19075, 101.73417], 17);
-
         var mymap = L.map('mapid', {
-            // center: [center.lat, center.lng],
             zoom: 17,
             measureControl: true
         });
@@ -75,38 +72,29 @@
             accessToken: 'pk.eyJ1IjoiaWxpeWFtbCIsImEiOiJjamo0ejR2cGQwMTltM3BvMzVhNDJ5dGNhIn0.Ye8kL5Duo_fF9Vtui2EagA',
             measureControl: true
         }).addTo(mymap);
-        
-    </script>
-    <script>
-        (function (L, document) {
-            // var map = L.map('map', {
-            //     center: [29.749817, -95.080757],
-            //     zoom: 16,
-            //     measureControl: true
-            // });
-            mymap.on('measurefinish', function (evt) {
-                // writeResults(evt);
-            });
 
-            function writeResults(results) {
-                document.getElementById('eventoutput').innerHTML = JSON.stringify(
-                    {
-                        area: results.area,
-                        areaDisplay: results.areaDisplay,
-                        lastCoord: results.lastCoord,
-                        length: results.length,
-                        lengthDisplay: results.lengthDisplay,
-                        pointCount: results.pointCount,
-                        points: results.points
-                    },
-                    null,
-                    2
-                );
-            }
-        })(window.L, window.document);
-    </script>
+        // (function (L, document) {
+        //     mymap.on('measurefinish', function (evt) {
+        //         writeResults(evt);
+        //     });
 
-    <script>
+        //     function writeResults(results) {
+        //         document.getElementById('eventoutput').innerHTML = JSON.stringify(
+        //             {
+        //                 area: results.area,
+        //                 areaDisplay: results.areaDisplay,
+        //                 lastCoord: results.lastCoord,
+        //                 length: results.length,
+        //                 lengthDisplay: results.lengthDisplay,
+        //                 pointCount: results.pointCount,
+        //                 points: results.points
+        //             },
+        //             null,
+        //             2
+        //         );
+        //     }
+        // })(window.L, window.document);
+
         // If absolute URL from the remote server is provided, configure the CORS
         // header on that server.
         var url = 'Sapura.pdf';
@@ -145,15 +133,34 @@
                 var renderTask = page.render(renderContext);
                 renderTask.then(function () {
                     console.log('Page rendered');
-                    
+
                     var center = {
                         lat: (mainCoordinates[0] + mainCoordinates[4]) / 2,
                         lng: (mainCoordinates[1] + mainCoordinates[5]) / 2
                     }
 
                     // L.setView([center.lat, center.lng], 17);
-                    mymap.panTo([center.lat, center.lng]);
-                    var newMarker = new L.marker([center.lat, center.lng]).addTo(mymap);
+                    // mymap.panTo([center.lat, center.lng]);
+                    mymap.locate({ setView: true, maxZoom: 17 });
+
+                    function onLocationFound(e) {
+                        var radius = e.accuracy / 2;
+
+                        L.marker(e.latlng).addTo(mymap)
+                            .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+                        L.circle(e.latlng, radius).addTo(mymap);
+                    }
+
+                    mymap.on('locationfound', onLocationFound);
+
+                    function onLocationError(e) {
+                        alert(e.message);
+                    }
+
+                    mymap.on('locationerror', onLocationError);
+
+                    // var newMarker = new L.marker([center.lat, center.lng]).addTo(mymap);
 
 
                     var imageUrl = canvas.toDataURL("image/png"),
