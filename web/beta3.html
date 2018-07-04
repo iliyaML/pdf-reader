@@ -66,11 +66,12 @@
             measureControl: true,
             attributionControl: false /* Remove leaflet at bottom right */
         });
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        // Old Tile Layer: https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            // attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             maxZoom: 25,
             id: 'mapbox.streets',
-            accessToken: 'pk.eyJ1IjoiaWxpeWFtbCIsImEiOiJjamo0ejR2cGQwMTltM3BvMzVhNDJ5dGNhIn0.Ye8kL5Duo_fF9Vtui2EagA',
+            // accessToken: 'pk.eyJ1IjoiaWxpeWFtbCIsImEiOiJjamo0ejR2cGQwMTltM3BvMzVhNDJ5dGNhIn0.Ye8kL5Duo_fF9Vtui2EagA',
             measureControl: true
         }).addTo(mymap);
 
