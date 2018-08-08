@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using System.Data; // For CommandType
+using Oracle.DataAccess.Client; // ODP.NET Oracle managed provider
+using Oracle.DataAccess.Types;
+
+namespace WebApplication1
+{
+    public partial class _Default : Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            string con = "Data Source=(DESCRIPTION =(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST = 192.168.7.30)(PORT = 1521)))(CONNECT_DATA =(SERVICE_NAME = orcl.jpphvis.local)));User ID=GIS;Password=Welcome1;";
+            
+            using (OracleConnection conn = new OracleConnection(con))
+            {
+                try
+                {
+                    conn.Open();
+
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "select * from SITE_SURVEY where ID = 1";
+                    cmd.CommandType = CommandType.Text;
+
+                    OracleDataReader dr = cmd.ExecuteReader(); // C#
+                    dr.Read();
+
+                    Session["Example"] = dr["GEOMETRY"].ToString();
+                }
+                catch (OracleException err)
+                {
+                    Session["Example"] = err.ToString();
+            
+                }
+            }
+        }
+    }
+}

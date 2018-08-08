@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+
+<img id="result"> 
+
+<a href="javascript: testPrint();"><p>PrintScreen</p></a>
+
+<script>
+function toDataURL(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      callback(reader.result);
+    }
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.responseType = 'blob';
+  xhr.send();
+}
+
+toDataURL('Sample.png', function(dataUrl) {
+  console.log('RESULT:', dataUrl)
+  document.getElementById('result').src = dataUrl;
+})
+</script>
+
+</body>
+</html>

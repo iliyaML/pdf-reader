@@ -59,7 +59,7 @@
     <canvas id="the-canvas" style="display: none;"></canvas>
     <!-- <pre id="eventoutput">...</pre> -->
 
-    <script src="js/leaflet-measure.js"></script>
+    <!-- <script src="js/leaflet-measure.js"></script> -->
     <script>
         var mymap = L.map('mapid', {
             zoom: 17,
@@ -75,27 +75,34 @@
             measureControl: true
         }).addTo(mymap);
 
-        // (function (L, document) {
-        //     mymap.on('measurefinish', function (evt) {
-        //         writeResults(evt);
-        //     });
+        setTimeout(function () {
+            var latlng = L.latLng(50.5, 30.5);
+            console.log(L.Projection.LonLat);
+        }, 3000);
 
-        //     function writeResults(results) {
-        //         document.getElementById('eventoutput').innerHTML = JSON.stringify(
-        //             {
-        //                 area: results.area,
-        //                 areaDisplay: results.areaDisplay,
-        //                 lastCoord: results.lastCoord,
-        //                 length: results.length,
-        //                 lengthDisplay: results.lengthDisplay,
-        //                 pointCount: results.pointCount,
-        //                 points: results.points
-        //             },
-        //             null,
-        //             2
-        //         );
-        //     }
-        // })(window.L, window.document);
+
+        // Info of drawings
+        (function (L, document) {
+            mymap.on('measurefinish', function (evt) {
+                writeResults(evt);
+            });
+
+            function writeResults(results) {
+                document.getElementById('eventoutput').innerHTML = JSON.stringify(
+                    {
+                        area: results.area,
+                        areaDisplay: results.areaDisplay,
+                        lastCoord: results.lastCoord,
+                        length: results.length,
+                        lengthDisplay: results.lengthDisplay,
+                        pointCount: results.pointCount,
+                        points: results.points
+                    },
+                    null,
+                    2
+                );
+            }
+        })(window.L, window.document);
 
         // If absolute URL from the remote server is provided, configure the CORS
         // header on that server.
@@ -145,31 +152,31 @@
                     // mymap.panTo([center.lat, center.lng]);
                     mymap.locate({ setView: true, maxZoom: 17 });
 
-                    function onLocationFound(e) {
-                        var radius = e.accuracy / 2;
+                    // function onLocationFound(e) {
+                    //     var radius = e.accuracy / 2;
 
-                        L.marker(e.latlng).addTo(mymap)
-                            .bindPopup("You are within " + radius + " meters from this point").openPopup();
+                    //     L.marker(e.latlng).addTo(mymap)
+                    //         .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-                        L.circle(e.latlng, radius).addTo(mymap);
-                    }
+                    //     L.circle(e.latlng, radius).addTo(mymap);
+                    // }
 
-                    mymap.on('locationfound', onLocationFound);
+                    // mymap.on('locationfound', onLocationFound);
 
-                    function onLocationError(e) {
-                        alert(e.message);
-                    }
+                    // function onLocationError(e) {
+                    //     alert(e.message);
+                    // }
 
-                    mymap.on('locationerror', onLocationError);
+                    // mymap.on('locationerror', onLocationError);
 
                     // var newMarker = new L.marker([center.lat, center.lng]).addTo(mymap);
 
 
                     var imageUrl = canvas.toDataURL("image/png"),
                         imageBounds = [[mainCoordinates[0], mainCoordinates[1]], [mainCoordinates[4], mainCoordinates[5]]];
-                        console.log(imageUrl);
+                    console.log(imageUrl);
                     L.imageOverlay(imageUrl, imageBounds, {
-                        opacity: 0.7
+                        opacity: 0.1
                     }).addTo(mymap);
                 });
             });
